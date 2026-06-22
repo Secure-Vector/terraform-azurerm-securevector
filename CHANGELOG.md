@@ -49,9 +49,9 @@ release per `vX.Y.Z` git tag.
   (≥0), `max_instances` (≥1).
 
 ### Notes
-- Hard prerequisites (story #182): a published engine container image whose
-  entrypoint binds `0.0.0.0:$PORT`, stores data at the mount path, and enrolls
-  from `SECUREVECTOR_ENROLL_TOKEN`; plus engine-side inbound auth. Both are
-  implemented in securevector-ai-threat-monitor pending the first ghcr publish.
-  The Terraform is correct against the real app interface and will deploy a
-  working engine once that image ships.
+- The engine image is published to ghcr
+  (`ghcr.io/secure-vector/securevector-ai-threat-monitor`, tags `latest` + `4.7.1`,
+  multi-arch): its entrypoint binds `0.0.0.0:$PORT`, stores data at the mount
+  path, and enrolls from `SECUREVECTOR_ENROLL_TOKEN`. Engine-side inbound-auth
+  enforcement ships in a later release; until then gate internet-facing
+  deployments at the network layer.
