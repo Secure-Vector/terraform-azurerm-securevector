@@ -7,6 +7,11 @@ release per `vX.Y.Z` git tag.
 ## [Unreleased]
 
 ### Added
+- **EU-region example** (`examples/eu-region/`) for data-residency deployments —
+  pins `location` to `westeurope` (`northeurope` for Ireland) and documents that
+  every resource (Container App, Azure Files share, Log Analytics workspace)
+  stays in the chosen location. No root-module change — `location` already drives
+  every resource.
 - Initial Azure module: deploys the SecureVector engine to the user's own Azure
   subscription on **Azure Container Apps** — managed HTTPS FQDN, scale-to-zero,
   and a clean `terraform destroy`. Creates the resource group, Container Apps
