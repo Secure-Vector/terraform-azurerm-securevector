@@ -3,12 +3,13 @@
 #
 # Same shape as ../free-tier, but pinned to an EU location for data residency.
 # Every resource this module creates is placed in `location`, so setting an EU
-# region keeps all governance/runtime data inside the EU. Nothing in this module
+# region keeps the resident copy of governance/runtime data in-region. Nothing in this module
 # replicates data to another region.
 #
 # Data residency: the engine processes and stores agent/governance data only in
-# the Azure subscription and location you deploy into. SecureVector never
-# receives it. See the module README for the residency posture.
+# the Azure subscription and location you deploy into. SecureVector does not store it. (NOTE: with Cloud Mode on, the engine sends
+# prompt text to scan.securevector.io (US) for ML analysis — not stored, but it
+# leaves the region; leave Cloud Mode off for strict EU residency. See README.) See the module README for the residency posture.
 #
 # Default location here is westeurope; northeurope also works
 # — just override -var="location=northeurope".
@@ -56,6 +57,12 @@ module "securevector" {
   # Cheapest trial posture
   min_instances        = 0
   securevector_api_key = var.securevector_api_key
+
+  # EU data residency: keep ALL prompt analysis local even with Cloud Mode on.
+  # The v4.8+ engine honors SV_DATA_RESIDENCY=eu (locks local-only analysis on;
+  # the toggle is enforced/locked and cloud /analyze is forced local). Harmless
+  # no-op on older engine images.
+  extra_env = { SV_DATA_RESIDENCY = "eu" }
 }
 
 output "dashboard_url" {
